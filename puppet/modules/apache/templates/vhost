@@ -2,7 +2,7 @@
 
     ServerName <%= server_name %>
 
-    DocumentRoot /srv/<%= server_name %>
+    DocumentRoot /srv/<%= server_name/src/www %>
 
     ErrorLog /var/log/<%= server_name %>/error.log
     CustomLog /var/log/<%= server_name %>/access.log common
