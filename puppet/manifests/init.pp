@@ -35,6 +35,4 @@ include php
 include mysql
 include git
 include tools
-
-
-#include mailcatcher
+include mailcatcher

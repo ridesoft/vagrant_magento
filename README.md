@@ -54,6 +54,11 @@ http://myproject.vm/info.php
 
 ##Konfiguration
 
+###SSH
+Username | Password | IP
+------------ | ------------- 
+vagrant | vagrant | 10.0.0.2
+
 ###Apache
 Der Document-Root befindet sich im folgenden Pfad, wenn die Konfiguration *config.vm.hostname* den Wert *myproject.vm* hat.
 
@@ -73,4 +78,9 @@ Username | Password
 ------------ | ------------- 
 admin | root
 magento | magento
+
+##Mailcatcher
+
+Mailcatcher is a fantastic sendmail replacement while developing on the local machine. [http://mailcatcher.me/](http://mailcatcher.me/).
+
 
