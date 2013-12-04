@@ -5,7 +5,7 @@ class server () {
         command => "apt-get update",
     }
 
-    package { ["curl", "tidy"] :
+    package { ["curl", "tidy", "vim"] :
           ensure  => latest,
           require => Exec['update'],
     }
