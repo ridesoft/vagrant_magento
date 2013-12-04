@@ -21,14 +21,20 @@ class { "apache":
   document_root => "${document_root}${hostname}"
 }
 
-include server
-include apache
-
-# MySQL
-
+class { "mysql":
+  db_root_password => "${db_root_password}",
+  db_name          => "${db_name}",
+  db_user          => "${db_user}",
+  db_password      => "${db_password}"
+}
 
 # Includes
-#include php
+include server
+include apache
+include php
+include mysql
+
+
 #include mailcatcher
 #include git
 #include tools

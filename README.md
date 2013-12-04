@@ -19,6 +19,9 @@ $ vagrant plugin install vagrant-hostmanager
 ##VirtualBox
 There is also a provider for VMWare Fusion available, but this provider requires a valid license, which can be bought. For easier setup, you want to download any supported VirtualBox Version. Supported Versions are *[4.0](https://www.virtualbox.org/wiki/Download_Old_Builds_4_0)*, *[4.1](https://www.virtualbox.org/wiki/Download_Old_Builds_4_1)* and *[4.2](https://www.virtualbox.org/wiki/Download_Old_Builds_4_2)*
 
+#Quick-Start
+The easiest way to setup the VM, is to just change the hostname for your project.
+
 #Setup
 ##Hostname
 The default hostname is *mothership-vagrant.vm*. As this Vagrantfile depends on the *Vagrant Host Manager*, the Virtual Machine will automatically be available at your host-machine.
@@ -31,7 +34,6 @@ If you prefer a more project-related hostname like *myproject.vm*, then just mod
 ```
 // Vagrantfile
 config.vm.hostname = "myproject.vm"
-
 ```
 Run this command to reload the Vagrantfile and reboot your virtual machine.
 
@@ -39,8 +41,36 @@ Run this command to reload the Vagrantfile and reboot your virtual machine.
 vagrant reload
 ```
 
+#Test
+Nach der Initialisierung, kann im Webbrowser einfach mal folgende URL aufgerufen werden:
 
+```
+http://myproject.vm/info.php
+```
 
 
 
 ##Shared Folders
+
+##Konfiguration
+
+###Apache
+Der Document-Root befindet sich im folgenden Pfad, wenn die Konfiguration *config.vm.hostname* den Wert *myproject.vm* hat.
+
+```
+/srv/myproject.vm
+```
+
+Der Apache-VHost befindet sich 
+
+###MySQL
+
+
+Das Admin-Passwort ist in der Standardinstallation ```root```.
+
+
+Username | Password
+------------ | ------------- 
+admin | root
+magento | magento
+
