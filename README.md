@@ -97,4 +97,10 @@ magento | magento
 
 Mailcatcher is a fantastic sendmail replacement while developing on the local machine. [http://mailcatcher.me/](http://mailcatcher.me/).
 
+Mailcatcher muss folgendermaßen gestartet werden:
+
+```
+mailcatcher --ip=192.168.162.146
+```
+
 
