@@ -33,7 +33,7 @@ The easiest way to setup the VM, is to just change the hostname for your project
 
 ##VMWare
 ```
-Start with --provider vmware_fusion
+Start with vagrant up --provider vmware_fusion --debug
 ```
 
 #Setup

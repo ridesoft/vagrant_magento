@@ -18,3 +18,29 @@
     SetEnv MAGE_IS_DEVELOPER_MODE 1
 
 </VirtualHost>
+
+
+<VirtualHost *:443>
+
+    ServerName <%= @server_name %>
+
+    SSLEngine on
+    SSLCertificateKeyFile /etc/apache2/ssl/<%= @server_name %>.key
+    SSLCertificateFile /etc/apache2/ssl/<%= @server_name %>.cert
+    SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+    DocumentRoot /srv/<%= server_name %>/www/
+
+    ErrorLog /var/log/<%= server_name %>/error.log
+    CustomLog /var/log/<%= server_name %>/access.log common
+
+    <Directory <%= document_root %>>
+        Order allow,deny
+        Allow from all
+        AllowOverride All
+        Options all
+    </Directory>
+
+    SetEnv MAGE_IS_DEVELOPER_MODE 1
+
+</VirtualHost>

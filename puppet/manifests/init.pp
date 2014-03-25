@@ -31,8 +31,8 @@ class { "mysql":
 # Includes
 include server
 include apache
-include php
 include mysql
+include php
 include git
 include tools
 include mailcatcher

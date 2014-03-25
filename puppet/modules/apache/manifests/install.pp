@@ -14,7 +14,31 @@ class apache::install ( $server_name, $document_root) {
     # Install the package
     package { "apache2":
         name   => "apache2",
-        ensure => latest
+        ensure => latest,
+        require => Class['server']
+    }
+
+    # The shell of www-data
+    -> exec { 'change www-data shell':
+      onlyif => "test `cat /etc/passwd | grep www-data | awk -F ':' '{ print \$7 }'` != '/bin/bash'",
+      command => 'chsh -s /bin/bash www-data'
+    }
+
+    # Generate certificates
+    -> file { "/etc/apache2/ssl":
+      ensure => directory,
+    }
+    -> exec { "key file certificate":
+      command => "openssl genrsa -out ${server_name}.key 2048",
+      cwd => "/etc/apache2/ssl",
+      creates => "/etc/apache2/ssl/${server_name}.key",
+      notify => Class['apache::service'],
+    }
+    -> exec { "cert file certificate":
+      command => "openssl req -new -x509 -key ${server_name}.key -out ${server_name}.cert -days 3650 -subj /CN=${server_name}",
+      cwd => "/etc/apache2/ssl",
+      creates => "/etc/apache2/ssl/${server_name}.cert",
+      notify => Class['apache::service'],
     }
 
     # create the log directory
@@ -30,6 +54,15 @@ class apache::install ( $server_name, $document_root) {
     file { "document_root":
         ensure => "directory",
         path    => "$document_root",
+        owner  => "vagrant",
+        group  => "vagrant",
+        mode   => 777,
+    }
+
+    # create the subfolder www in the document root
+    file { "document_root_www":
+        ensure => "directory",
+        path    => "$document_root/www",
         owner  => "vagrant",
         group  => "vagrant",
         mode   => 777,
@@ -71,6 +104,18 @@ class apache::install ( $server_name, $document_root) {
     exec { 'enable mod rewrite':
       onlyif => 'test `apache2ctl -M 2> /dev/null | grep rewrite | wc -l` -ne 1',
       command => 'a2enmod rewrite',
+      require => Package['apache2'],
+    } ~> Service['apache2']
+
+    exec { 'enable mod ssl':
+      onlyif => 'test `apache2ctl -M 2> /dev/null | grep ssl | wc -l` -ne 1',
+      command => 'a2enmod ssl',
+      require => Package['apache2'],
+    } ~> Service['apache2']
+
+    exec { 'enable mod headers':
+      onlyif => 'test `apache2ctl -M 2> /dev/null | grep headers | wc -l` -ne 1',
+      command => 'a2enmod headers',
       require => Package['apache2'],
     } ~> Service['apache2']
 
