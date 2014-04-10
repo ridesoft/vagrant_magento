@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "myproject.vm"
+    config.vm.hostname = "typehype.vm"
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
