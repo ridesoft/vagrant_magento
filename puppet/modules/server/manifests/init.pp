@@ -5,7 +5,7 @@ class server () {
         command => "apt-get update",
     }
 
-    package { ["curl", "tidy", "vim", "zip"] :
+    package { ["curl", "tidy", "vim", "zip", "libsqlite3-dev"] :
           ensure  => latest,
           require => Exec['update'],
     }

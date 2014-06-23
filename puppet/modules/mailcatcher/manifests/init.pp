@@ -1,27 +1,16 @@
 class mailcatcher () {
 
 $modules = [
-"ruby",
-"rubygems",
+"ruby", "ruby1.9.1-dev", "build-essential"
 ]
 package { $modules :
   ensure => latest,
   require => Exec["update"],
 }
 
-
-# Install the package
-package { "libsqlite3-dev":
-  name => "libsqlite3-dev",
-  ensure => latest
-}
-
-
-package { "mailcatcher":
-  ensure => latest,
-  provider => gem,
-  require => [ Package['libsqlite3-dev'], Class["php"], Class['apache'] ],
-  notify => Service["apache2"],
-}
-
+  package { "mailcatcher":
+    ensure => latest,
+    provider => gem,
+    require => [ Package['libsqlite3-dev'], Class["php"] ]
+  }
 }

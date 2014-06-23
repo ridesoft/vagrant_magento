@@ -1,14 +1,14 @@
 <VirtualHost *:80>
 
-    ServerName <%= server_name %>
+    ServerName <%= @server_name %>
 
-    DocumentRoot /srv/<%= server_name %>/www/
+    DocumentRoot /srv/<%= @server_name %>/www/
 
-    ErrorLog /var/log/<%= server_name %>/error.log
-    CustomLog /var/log/<%= server_name %>/access.log common
+    ErrorLog /var/log/<%= @server_name %>/error.log
+    CustomLog /var/log/<%= @server_name %>/access.log common
     #php_value error_log /path/php.log
 
-    <Directory <%= document_root %>>
+    <Directory <%= @document_root %>>
         Order allow,deny
         Allow from all
         AllowOverride All
@@ -29,12 +29,12 @@
     SSLCertificateFile /etc/apache2/ssl/<%= @server_name %>.cert
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
-    DocumentRoot /srv/<%= server_name %>/www/
+    DocumentRoot /srv/<%= @server_name %>/www/
 
-    ErrorLog /var/log/<%= server_name %>/error.log
-    CustomLog /var/log/<%= server_name %>/access.log common
+    ErrorLog /var/log/<%= @server_name %>/error.log
+    CustomLog /var/log/<%= @server_name %>/access.log common
 
-    <Directory <%= document_root %>>
+    <Directory <%= @document_root %>>
         Order allow,deny
         Allow from all
         AllowOverride All

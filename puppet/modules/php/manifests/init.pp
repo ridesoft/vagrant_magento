@@ -7,7 +7,7 @@ class php () {
     notify => Service['apache2'],
   }
 
-  -> file { "/etc/php5/conf.d/xdebug.ini":
+  -> file { "/etc/php5/apache2/conf.d/20-xdebug.ini":
     ensure => file,
     source => "puppet:///modules/php/xdebug.ini",
     notify => Service['apache2'],
@@ -33,7 +33,7 @@ class php () {
     "php5-intl",
     "php5-mcrypt",
     "php5-tidy",
-    "php5-xdebug",
+    "php5-xdebug"
   ]
   package { $modules :
     ensure => latest,

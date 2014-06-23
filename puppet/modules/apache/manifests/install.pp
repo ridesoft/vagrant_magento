@@ -78,7 +78,7 @@ class apache::install ( $server_name, $document_root) {
 
     # Create the vhost
     -> file { "virtual-host":
-      path => "/etc/apache2/sites-available/$server_name",
+      path => "/etc/apache2/sites-available/$server_name.conf",
       ensure => present,
       content => template("apache/vhost"),
       notify => Class['apache::service'],
@@ -94,8 +94,8 @@ class apache::install ( $server_name, $document_root) {
 
     # Enable the virtualhost
     exec { "Enable the virtualhost":
-      command => "a2ensite $server_name",
-      creates => "/etc/apache2/sites-enabled/$server_name",
+      command => "a2ensite $server_name.conf",
+      creates => "/etc/apache2/sites-enabled/$server_name.conf",
       require => [ Package['apache2'], File['virtual-host'] ],
       notify => Class['apache::service'],
     }
