@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "mothership.vm"
+    config.vm.hostname = "atisto.vm"
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
