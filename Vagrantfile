@@ -31,6 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #v.gui = true
         v.vmx["memsize"] = "2048"
         v.vmx["numvcpus"] = "2"
+        v.name = config.vm.hostname
     end
 
     # "Provision" with hostmanager
