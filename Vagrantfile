@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "aigner.vm"
+    config.vm.hostname = "magento2.vm"
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
     config.vm.provider :vmware_fusion do |v|
-        #v.gui = true
+        v.gui = true
         v.vmx["memsize"] = "2048"
         v.vmx["numvcpus"] = "2"
         v.name = config.vm.hostname
@@ -36,6 +36,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # "Provision" with hostmanager
     config.vm.provision :hostmanager
+
+    config.vm.provision :shell, :path => "puppet/bin/bootstrap.sh"
+
 
     # Puppet!
     config.vm.provision :puppet do |puppet|
