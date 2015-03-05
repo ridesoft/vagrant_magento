@@ -5,5 +5,6 @@ class tools {
   include tools::magerun
   include tools::phantomjs
   include tools::z
+  include tools::npm
 
 }
