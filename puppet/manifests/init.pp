@@ -32,6 +32,7 @@ class { "mysql":
 include server
 include apache
 include mysql
+include redis
 include php
 include git
 include tools

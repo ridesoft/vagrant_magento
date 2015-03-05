@@ -33,7 +33,13 @@ class php () {
     "php5-intl",
     "php5-mcrypt",
     "php5-tidy",
-    "php5-xdebug"
+    "php5-xdebug",
+
+    # optional
+    "php5-imagick",
+    "php5-imap",
+    "php5-xsl",
+    "php5-memcache",
   ]
   package { $modules :
     ensure => latest,
