@@ -1,0 +1,14 @@
+{
+  "name": "mothership/mothership_vagrant_magento",
+  "license": "GPL-3.0",
+  "type": "vagrant-configuration",
+  "description": "Mothership Vagrant File",
+  "homepage": "https://www.mothership.de",
+  "authors": [
+    {
+      "name": "Don Bosco van Hoi",
+      "email": "vanhoi@mothership.de",
+      "role": "Author/Maintainer"
+    }
+  ]
+}
