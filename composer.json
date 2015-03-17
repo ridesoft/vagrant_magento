@@ -13,5 +13,10 @@
   ],
  "require": {
     "composer/installers": "~1.0"
- }
+ },
+  "extra": {
+    "installer-paths": {
+      "vagrant/": ["mothership/mothership_vagrant_magento"]
+    }
+  }
 }
