@@ -10,5 +10,8 @@
       "email": "vanhoi@mothership.de",
       "role": "Author/Maintainer"
     }
-  ]
+  ],
+ "require": {
+    "composer/installers": "~1.0",
+ }
 }
