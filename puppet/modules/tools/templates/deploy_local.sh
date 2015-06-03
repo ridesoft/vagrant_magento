@@ -34,6 +34,19 @@ mkdir -p ${BUILDENV}/htdocs
 echo "Using build directory ${BUILDENV}"
 
 
+# Start building everything
+cp -f scripts/composer.json ${BUILDENV}
+cp -f scripts/.basedir ${BUILDENV}/.modman
+
+if [ -d "${BUILDENV}/.modman/extension" ] ; then
+    rm -rf "${BUILDENV}/.modman/extension"
+fi
+
+cp -rf . "${BUILDENV}/.modman/extension"
+
+
+
+
 # Get absolute path to main directory
 ABSPATH=$(cd "${0%/*}" 2>/dev/null; echo "${PWD}/${0##*/}")
 SOURCE_DIR=`dirname "${ABSPATH}"`
@@ -60,15 +73,6 @@ magerun install \
   --baseUrl="http://extension.vm/" || { echo "Installing Magento failed"; exit 1; }
 
 
-# Start building everything
-cp -f scripts/composer.json ${BUILDENV}
-cp -f scripts/.basedir ${BUILDENV}/.modman
-
-if [ -d "${BUILDENV}/.modman/extension" ] ; then
-    rm -rf "${BUILDENV}/.modman/extension"
-fi
-
-cp -rf . "${BUILDENV}/.modman/extension"
 
 cd ${BUILDENV}
 composer.phar install
