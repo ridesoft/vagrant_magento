@@ -6,5 +6,6 @@ class tools {
   include tools::phantomjs
   include tools::z
   include tools::npm
+  include tools::deployscript
 
 }

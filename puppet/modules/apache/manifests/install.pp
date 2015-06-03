@@ -50,6 +50,14 @@ class apache::install ( $server_name, $document_root) {
         mode   => 777,
     }
 
+  file { "logs-extension":
+        ensure => "directory",
+        path    => "/var/log/extension.vm",
+        owner  => "root",
+        group  => "root",
+        mode   => 777,
+    }
+
     # create the document root
     file { "document_root":
         ensure => "directory",
@@ -81,6 +89,14 @@ class apache::install ( $server_name, $document_root) {
       path => "/etc/apache2/sites-available/$server_name.conf",
       ensure => present,
       content => template("apache/vhost"),
+      notify => Class['apache::service'],
+    }
+
+    # Create the vhost
+    -> file { "virtual-host-extension":
+      path => "/etc/apache2/sites-available/extension.vm.conf",
+      ensure => present,
+      content => template("apache/extension-vhost"),
       notify => Class['apache::service'],
     }
 

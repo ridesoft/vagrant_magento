@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+
+    ServerName extension.vm
+
+    DocumentRoot /srv/extension.vm/www/
+
+    ErrorLog /var/log/extension.vm/error.log
+    CustomLog /var/log/extension.vm/access.log common
+    #php_value error_log /path/php.log
+
+    <Directory /srv/extension.vm/htdocs>
+        Require all granted
+        AllowOverride All
+        Options all
+    </Directory>
+
+    SetEnv MAGE_IS_DEVELOPER_MODE 1
+
+</VirtualHost>
+
+
+<VirtualHost *:443>
+
+    ServerName extension.vm
+
+    SSLEngine on
+    SSLCertificateKeyFile /etc/apache2/ssl/<%= @server_name %>.key
+    SSLCertificateFile /etc/apache2/ssl/<%= @server_name %>.cert
+    SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+    DocumentRoot /srv/extension.vm/www/
+
+    ErrorLog /var/log/extension.vm/error.log
+    CustomLog /var/log/extension.vm/access.log common
+
+    <Directory /srv/extension.vm/htdocs>
+        Require all granted
+        AllowOverride All
+        Options all
+    </Directory>
+
+    SetEnv MAGE_IS_DEVELOPER_MODE 1
+
+</VirtualHost>
