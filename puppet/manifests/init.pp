@@ -28,10 +28,6 @@ class { "mysql":
   db_password      => "${db_password}"
 }
 
-class { 'nodejs':
-  version => 'v0.10.25'
-}
-
 # Includes
 
 # Standard library for some puppet packages
@@ -40,9 +36,6 @@ include stdlib
 include server
 include apache
 include mysql
-
-# Puppet Package from https://forge.puppetlabs.com/willdurand/nodejs
-include nodejs
 include redis
 include php
 include git
