@@ -14,28 +14,16 @@ Exec {
   logoutput => false,
 }
 
-
 # Apache
 class { "apache":
   server_name   => "${hostname}",
   document_root => "${document_root}${hostname}"
 }
 
-class { "mysql":
-  db_root_password => "${db_root_password}",
-  db_name          => "${db_name}",
-  db_user          => "${db_user}",
-  db_password      => "${db_password}"
-}
-
-# Includes
-
 # Standard library for some puppet packages
 include stdlib
-
 include server
 include apache
-include mysql
 include redis
 include php
 include git

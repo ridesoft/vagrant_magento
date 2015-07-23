@@ -1,6 +1,6 @@
 class php () {
 
-  # Install package
+# Install package
   package { "php5":
     ensure => latest,
     require => [ Class['server'], Package['apache2']],
@@ -8,6 +8,14 @@ class php () {
   }
 
   -> file { "/etc/php5/apache2/conf.d/20-xdebug.ini":
+    ensure => file,
+    source => "puppet:///modules/php/xdebug.ini",
+    notify => Service['apache2'],
+    owner => "root",
+    group => "root",
+  }
+
+  -> file { "/etc/php5/cli/conf.d/20-xdebug.ini":
     ensure => file,
     source => "puppet:///modules/php/xdebug.ini",
     notify => Service['apache2'],
@@ -23,7 +31,7 @@ class php () {
     group => "root",
   }
 
-  # Install modules
+# Install modules
   $modules = [
     "php5-cli",
     "php5-common",
@@ -35,7 +43,7 @@ class php () {
     "php5-tidy",
     "php5-xdebug",
 
-    # optional
+  # optional
     "php5-imagick",
     "php5-imap",
     "php5-xsl",
@@ -44,5 +52,11 @@ class php () {
   package { $modules :
     ensure => latest,
     require => [ Package['php5'], Class['server'], Package['apache2'] ],
+  }
+
+  # add xdebug to bashrc
+  -> exec { "add XDEBUG KEY to .bashrc":
+    cwd     => "/usr/local/bin",
+    command => "echo 'export XDEBUG_CONFIG=\"idekey=PHPSTORM\"' >> /home/vagrant/.bashrc",
   }
 }

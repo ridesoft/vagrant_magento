@@ -84,14 +84,20 @@ Der Apache-VHost befindet sich
 
 ###MySQL
 
+Hinweis: Dieser Branch ist experimentell. Teil des Experiments ist der Einsatz von virtualisierten Container. Es kann momentan
+kein Support gewährleistet werden.
 
-Das Admin-Passwort ist in der Standardinstallation ```root```.
+Auf dieser virtuellen Maschine befindet sich kein klassicher MySQL-Daemon. Stattdessen wird MySQL über einen Docker-Container
+ausgeliefert. Genauer gesagt über ```paintedfox/mariadb```. Dieser Container ist sehr flexibel, erfordert aber wie alle
+Docker-Container ein Volume, um Daten persistent zu speichern. Damit das möglich ist, gibt es ein Verzeichnis 
+```/hme/docker/mysql```, dass bei jedem Start gemountet werden muss. Hierzu kann folgender Befehl benutzt werden:
 
+```
+docker run -d --name=mariadb -p 127.0.0.1:3306:3306 -v /opt/mariadb/data:/data -e USER="super" -e PASS="super123" paintedfox/mariadb
+```
 
-Username | Password
------------- | ------------- 
-admin | root
-magento | magento
+Wenn die VM ausgeschaltet wurde, lässt sich diese wieder durch den Befehl starten.
+
 
 ##Mailcatcher
 

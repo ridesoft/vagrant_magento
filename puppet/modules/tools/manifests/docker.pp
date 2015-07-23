@@ -22,4 +22,8 @@ class tools::docker {
   -> file { "/home/docker/elasticsearch":
     ensure => directory,
   }
+
+  -> file { "/home/docker/mysql":
+    ensure => directory,
+  }
 }

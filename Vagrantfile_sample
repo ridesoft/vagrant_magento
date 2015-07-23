@@ -5,12 +5,17 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-    config.vm.box     = "trusty64"
-    # config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+    if Vagrant.has_plugin?("vagrant-cachier")
+    # More info on http://fgrehm.viewdocs.io/vagrant-cachier/usage
+        config.cache.scope = :box
+    end
+
+    # https://github.com/phusion/open-vagrant-boxes
+    config.vm.box     = "phusion-open-ubuntu-14.04-amd64"
     config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "mothership.vm"
+    config.vm.hostname = "magento.vm"
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
@@ -19,13 +24,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     config.vm.network :private_network, ip: "192.168.162.140"
 
-    # If true, then any SSH connections made will enable agent forwarding.
-    # Default value: false
-    # config.ssh.forward_agent = true
 
     # Define folder to be synced
     # config.vm.synced_folder "srv/", "/srv"
-
 
     config.vm.provider :vmware_fusion do |v|
         #v.gui = true
@@ -45,7 +46,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         puppet.module_path    = "puppet/modules"
         puppet.options        = "--verbose --debug"
 
-
         # Factors
         puppet.facter = {
             "vagrant" => "1",
@@ -54,13 +54,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             "db_user"          => "root",
             "db_password"      => "root",
             "db_name"          => "dev",
-
             "db_name_tests"    => "dev",
 
             # Apache
             "hostname"         => config.vm.hostname,
             "document_root"    => "/srv/"
         }
+    end
 
+    config.vm.provision "docker" do |d|
+      d.pull_images "elasticsearch"
+      d.pull_images "paintedfox/mariadb"
     end
 end
