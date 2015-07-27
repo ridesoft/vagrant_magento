@@ -7,4 +7,5 @@ class tools {
   include tools::z
   #include tools::deployscript
   include tools::docker
+  include tools::mysql
 }
