@@ -110,3 +110,24 @@ mailcatcher --ip=192.168.162.146
 ```
 
 
+##SSH Key - Private Repositories
+
+Falls du ein privates Repository hast, solltest du folgende Schritte ausführen:
+
+1. Auf dem Hostsystem deinen Private-Key auf dem Server übertragen
+
+```
+scp ~/.ssh/id_* vagrant@<hostname>:/home/vagrant
+```
+
+2. Das nervige Passphrase beenden
+
+Einfach auf der Konsole folgende Befehle eingeben. Hilft sofort.
+
+```
+eval $(ssh-agent)
+ssh-add
+```
+
+
+
