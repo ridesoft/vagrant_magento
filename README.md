@@ -99,6 +99,13 @@ docker run -d --name=mariadb -p 127.0.0.1:3306:3306 -v /opt/mariadb/data:/data -
 Wenn die VM ausgeschaltet wurde, lässt sich diese wieder durch den Befehl starten.
 
 
+##Elasticsearch
+
+```
+docker run -d -p 9200:9200 -p 9300:9300 -v /home/docker/elasticsearch:/data elasticsearch /usr/share/elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml -Des.config=/data/elasticsearch.yml
+```
+
+
 ##Mailcatcher
 
 Mailcatcher is a fantastic sendmail replacement while developing on the local machine. [http://mailcatcher.me/](http://mailcatcher.me/).
