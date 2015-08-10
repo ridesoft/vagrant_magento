@@ -82,6 +82,15 @@ Der Document-Root befindet sich im folgenden Pfad, wenn die Konfiguration *confi
 
 Der Apache-VHost befindet sich 
 
+###Docker
+
+Alle Docker-Instanzen killen
+
+```
+docker rm $(docker ps -a -q)
+```
+
+
 ###MySQL
 
 Hinweis: Dieser Branch ist experimentell. Teil des Experiments ist der Einsatz von virtualisierten Container. Es kann momentan
@@ -103,6 +112,38 @@ Wenn die VM ausgeschaltet wurde, lässt sich diese wieder durch den Befehl start
 
 ```
 docker run -d -p 9200:9200 -p 9300:9300 -v /home/docker/elasticsearch:/data elasticsearch /usr/share/elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml -Des.config=/data/elasticsearch.yml
+```
+
+#Node
+
+
+```
+# https://registry.hub.docker.com/u/dockerfile/nodejs/ (builds on ubuntu:14.04)
+FROM node
+
+MAINTAINER My Name, me@email.com
+
+ENV HOME /home/web
+WORKDIR /home/web/site
+
+RUN useradd web -d /home/web -s /bin/bash -m
+
+RUN npm install -g grunt-cli
+RUN npm install -g bower
+
+RUN chown -R web:web /home/web
+USER web
+
+
+ENV NODE_ENV development
+
+# Port 9000 for server
+# Port 35729 for livereload
+EXPOSE 8888
+CMD grunt
+
+docker run -it --rm --name my-running-script -v "$PWD":/tmp/app -w /tmp/app my-npm-app npm install
+docker run -it --rm --name my-running-script -v "$PWD":/tmp/app -w /tmp/app my-npm-app grunt debug
 ```
 
 
