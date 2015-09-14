@@ -3,8 +3,12 @@ vagrant_magento
 
 Vagrant Skript for setting up a vm with magento
 
+#Einleitung
+Hinweis: Dieser Branch ist experimentell. Er wird hauptsächlich benutzt, um den Einsatz von Docker-Container im Alltag zu überprüfen.
+Hier sind vor Allem die Kriterien "einfach" und "muss-out-of-the-box" funktionieren wichtig.
 
-#Requirements
+Es wird sukzessive versucht, die Abhängigkeiten von Pakten zu lösen. Bei einigen Services wie zum Beispiel mailcatcher ist das noch nicht
+optimal gelöst. Es werden also vorerst lediglich MariaDB (löst MySQL ab) und Elasticsearch als Container verwendet.
 
 ##Vagrant
 
@@ -16,6 +20,7 @@ Install it with the following command.
 ```
 $ vagrant plugin install vagrant-hostmanager
 ```
+
 ##VirtualBox
 There is also a provider for VMWare Fusion available, but this provider requires a valid license, which can be bought. For easier setup, you want to download any supported VirtualBox Version. Supported Versions are *[4.0](https://www.virtualbox.org/wiki/Download_Old_Builds_4_0)*, *[4.1](https://www.virtualbox.org/wiki/Download_Old_Builds_4_1)* and *[4.2](https://www.virtualbox.org/wiki/Download_Old_Builds_4_2)*
 
@@ -26,7 +31,6 @@ For using vmware provider use otherboxes
 vagrant plugin install vagrant-vmware-fusion
 vagrant plugin license vagrant-vmware-fusion license.lic 
 ```
-
 
 #Quick-Start
 The easiest way to setup the VM, is to just change the hostname for your project.
@@ -63,7 +67,6 @@ http://myproject.vm/info.php
 ```
 
 
-
 ##Shared Folders
 
 ##Konfiguration
@@ -84,17 +87,19 @@ Der Apache-VHost befindet sich
 
 ###Docker
 
-Alle Docker-Instanzen killen
+Die Docker-Instanzen werden bei Vagrant nicht automatisch neu gestartet, zumindest nicht zuverlässig. Es gibt eine Möglichkeit, sich
+alle Container anzuzeigen ```docker ps -a```. Danach lassen sich einzelne Container gezielt mit ```docker rm <id>``` entfernen. Da
+sich die einzelnen Schritte automatisieren lassen, gibt es im Verzeichnis ```/usr/local/bin``` ein Script ```doker-restart.sh```. 
+
+In den meisten Anwendungsfällen reicht dieser Befehl aus, um die Container ```elasticsearch``` und ```mariadb``` neu zu starten.
 
 ```
 docker rm $(docker ps -a -q)
 ```
 
 
-###MySQL
+###MariaDB (MySQL)
 
-Hinweis: Dieser Branch ist experimentell. Teil des Experiments ist der Einsatz von virtualisierten Container. Es kann momentan
-kein Support gewährleistet werden.
 
 Auf dieser virtuellen Maschine befindet sich kein klassicher MySQL-Daemon. Stattdessen wird MySQL über einen Docker-Container
 ausgeliefert. Genauer gesagt über ```paintedfox/mariadb```. Dieser Container ist sehr flexibel, erfordert aber wie alle
@@ -108,7 +113,12 @@ docker run -d --name=mariadb -p 127.0.0.1:3306:3306 -v /opt/mariadb/data:/data -
 Wenn die VM ausgeschaltet wurde, lässt sich diese wieder durch den Befehl starten.
 
 
-##Elasticsearch
+###Elasticsearch
+
+Elasticsearch wird ebenfalls über einen Docker-Container ausgeliefert. Eigentlich funktioniert das problemlos out-of-the-box. 
+Interessant ist lediglich die Datei ```home/docker/elasticsearch/data/elasticsearch.yml```. Es handelt sich dabei 1:1 um eine
+gültige Elasticsearch Konfiguration. Die einzige Modifikationen sind momentan die Pfade für die Daten und Logs für das Mapping 
+und die Aktivierung des Scriptings.
 
 ```
 docker run -d -p 9200:9200 -p 9300:9300 -v /home/docker/elasticsearch:/data elasticsearch /usr/share/elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml -Des.config=/data/elasticsearch.yml
