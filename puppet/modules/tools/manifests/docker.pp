@@ -33,4 +33,16 @@ class tools::docker {
   -> file { "/home/docker/mysql":
     ensure => directory,
   }
+
+  # Create the docker restart script
+  file { "docker-restart-script":
+    path => "/usr/local/bin/docker-restart.sh",
+    ensure => present,
+    content => template("tools/docker-restart.sh")
+  }
+
+  -> exec { "chmod modman docker-restart-script":
+    cwd     => "/usr/local/bin",
+    command => "chmod +x /usr/local/bin/docker-restart.sh",
+  }
 }
