@@ -1,0 +1,6 @@
+---
+ip: "192.168.50.115"
+hostname: "mothership.vm"
+path: 'srv/'
+cpu_core: 2
+ram: 2048

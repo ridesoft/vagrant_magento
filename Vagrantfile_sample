@@ -1,6 +1,19 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+
+config_file = './' + 'development_vars.yml'
+if !File.exist?(config_file)
+  puts 'Please copy development_vars.yml.example to ' + config_file
+    + ' and modify configuration variables as required for your development environment.'
+end
+
+CONFIG = YAML.load_file(config_file)
+
+cpu_core = CONFIG['cpu_core'] || 4
+ram = CONFIG['ram'] || 2048
+
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -10,27 +23,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "mothership.vm"
+    config.vm.hostname = CONFIG["hostname"]
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = true
 
-    config.vm.network :private_network, ip: "192.168.162.140"
+    config.vm.network :private_network, ip: CONFIG["ip"]
 
     # If true, then any SSH connections made will enable agent forwarding.
     # Default value: false
     # config.ssh.forward_agent = true
 
     # Define folder to be synced
-    # config.vm.synced_folder "srv/", "/srv"
+    # config.vm.synced_folder CONFIG["path"], "/srv"
 
 
     config.vm.provider :vmware_fusion do |v|
         #v.gui = true
-        v.vmx["memsize"] = "2048"
-        v.vmx["numvcpus"] = "2"
+        v.vmx["memsize"] = ram
+        v.vmx["numvcpus"] = cpu_core
         v.name = config.vm.hostname
     end
 

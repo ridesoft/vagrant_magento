@@ -1,5 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'yaml'
+
+config_file = './' + 'development_vars.yml'
+if !File.exist?(config_file)
+  puts 'Please copy development_vars.yml.example to ' + config_file
+    + ' and modify configuration variables as required for your development environment.'
+end
+
+CONFIG = YAML.load_file(config_file)
+
+cpu_core = CONFIG['cpu_core'] || 4
+ram = CONFIG['ram'] || 2048
 
 VAGRANTFILE_API_VERSION = "2"
 
@@ -9,25 +21,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
     config.vm.network :forwarded_port, guest: 80, host: 8080
-    config.vm.hostname = "myproject.vm"
+    config.vm.hostname = CONFIG["hostname"]
 
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
     config.hostmanager.ignore_private_ip = false
     config.hostmanager.include_offline = true
 
-    config.vm.network :private_network, ip: "10.0.0.2"
+    config.vm.network :private_network, ip: CONFIG["ip"]
 
     # If true, then any SSH connections made will enable agent forwarding.
     # Default value: false
     # config.ssh.forward_agent = true
 
     # Define folder to be synced
-    # config.vm.synced_folder "srv/", "/srv"
+    # config.vm.synced_folder CONFIG["path"], "/srv"
 
     # Virtualbox customization
     config.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--memory", "1024", "--cpus", "2", "--pae", "on", "--hwvirtex", "on", "--ioapic", "on"]
+      vb.customize ["modifyvm", :id, "--memory", ram, "--cpus", cpu_core, "--pae", "on", "--hwvirtex", "on", "--ioapic", "on"]
     end
 
     # "Provision" with hostmanager
